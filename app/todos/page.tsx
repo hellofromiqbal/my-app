@@ -3,6 +3,7 @@
 
 import { useEffect, useState } from "react";
 import { FaCheckCircle, FaRegCircle, FaTrash } from "react-icons/fa";
+import { toast } from "react-toastify";
 
 type Todo = {
   id: string;
@@ -24,9 +25,10 @@ const TodosPage = () => {
       setTodos(updatedTodos);
       localStorage.setItem("todos", JSON.stringify(updatedTodos));
       setNewTodo("");
+      toast.success("Todo added successfully!");
     } catch (error) {
       console.error("Failed to add todo:", error);
-      alert("Error adding todo. Please try again.");
+      toast.error("Failed to add todo.");
     };
   };
   // Handle delete todo
@@ -35,9 +37,10 @@ const TodosPage = () => {
       const updatedTodos = todos.filter((todo) => todo.id !== id);
       setTodos(updatedTodos);
       localStorage.setItem("todos", JSON.stringify(updatedTodos));
+      toast.success("Todo deleted successfully!");
     } catch (error) {
       console.error("Failed to delete todo:", error);
-      alert("Error deleting todo. Please try again.");
+      toast.error("Failed to delete todo.");
     };
   };
   // Handle mark todo as done
@@ -48,9 +51,10 @@ const TodosPage = () => {
       );
       setTodos(updatedTodos);
       localStorage.setItem("todos", JSON.stringify(updatedTodos));
+      toast.success("Todo status updated successfully!");
     } catch (error) {
       console.error("Failed to mark todo as done:", error);
-      alert("Error marking todo as done. Please try again.");
+      toast.error("Failed to update todo status.");
     };
   };
   useEffect(() => {
