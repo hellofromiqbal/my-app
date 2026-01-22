@@ -1,6 +1,8 @@
 'use client';
 
+import Link from "next/link";
 import { useEffect, useState } from "react";
+import { BiArrowBack } from "react-icons/bi";
 
 type Post = {
   id: number;
@@ -66,9 +68,12 @@ const PostsPage = () => {
     return (
       <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black px-4">
         <div className="flex flex-col gap-2 w-lg">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            Posts
-          </h1>
+          <div className="flex items-center gap-2">
+            <Link href="/"><BiArrowBack className="cursor-pointer"/></Link>
+            <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
+              Posts
+            </h1>
+          </div>
           <form className="flex gap-2 mb-4">
             <input
               type="text"

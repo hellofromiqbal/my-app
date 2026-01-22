@@ -5,6 +5,8 @@ import { FaCheckCircle, FaRegCircle, FaTrash } from "react-icons/fa";
 import { toast } from "react-toastify";
 import { useAppDispatch, useAppSelector } from "../store/hooks";
 import { addNewTodo, allTodos, deleteTodo, toggleTodoStatus } from "../store/slices/todosSlice";
+import { BiArrowBack } from "react-icons/bi";
+import Link from "next/link";
 
 const TodosPage = () => {
   const dispatch = useAppDispatch();
@@ -84,9 +86,12 @@ const TodosPage = () => {
     return (
       <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black px-4">
         <div className="flex flex-col gap-2 w-lg">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            Todos
-          </h1>
+          <div className="flex items-center gap-2">
+            <Link href="/"><BiArrowBack className="cursor-pointer"/></Link>
+            <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
+              Todos
+            </h1>
+          </div>
           <form className="flex gap-2">
             <input
               type="text"
