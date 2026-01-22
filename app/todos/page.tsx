@@ -10,6 +10,7 @@ const TodosPage = () => {
   const dispatch = useAppDispatch();
   const value = useAppSelector((state) => state.todos.value);
   const [newTodo, setNewTodo] = useState("");
+  const [filter, setFilter] = useState("all");
   // Handle add new todo
   const handleSubmitTask = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -61,6 +62,11 @@ const TodosPage = () => {
       dispatch(allTodos(JSON.parse(storedTodos)));
     };
   }, [dispatch]);
+  const filteredTodos = value.filter((todo) => {
+    if (filter === "done") return todo.isDone;
+    if (filter === "notDone") return !todo.isDone;
+    return true;
+  });
   return (
     <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black px-4">
       <div className="flex flex-col gap-2 w-lg">
@@ -76,15 +82,35 @@ const TodosPage = () => {
             onChange={(e) => setNewTodo(e.target.value)}
           />
           <button
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-md bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px] cursor-pointer"
+            className="flex h-12 w-full items-center justify-center gap-2 rounded-md bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-39.5 cursor-pointer"
             onClick={handleSubmitTask}
           >
             Submit
           </button>
         </form>
-        <ul className="flex flex-col gap-2 w-full mt-3 h-96 overflow-y-auto">
-          {value.length > 0 ? (
-            value.map((todo) => (
+        <div className="flex gap-2">
+          <button
+            className={`px-4 py-2 text-xs rounded-full ${filter === "all" ? "bg-foreground text-background" : "bg-background border border-white text-white"}`}
+            onClick={() => setFilter("all")}
+          >
+            All
+          </button>
+          <button
+            className={`px-4 py-2 text-xs rounded-full ${filter === "done" ? "bg-foreground text-background" : "bg-background border border-white text-white"}`}
+            onClick={() => setFilter("done")}
+          >
+            Done
+          </button>
+          <button
+            className={`px-4 py-2 text-xs rounded-full ${filter === "notDone" ? "bg-foreground text-background" : "bg-background border border-white text-white"}`}
+            onClick={() => setFilter("notDone")}
+          >
+            Not Done
+          </button>
+        </div>
+        <ul className="flex flex-col gap-2 w-full h-96 overflow-y-auto">
+          {filteredTodos.length > 0 ? (
+            filteredTodos.map((todo) => (
               <li key={todo.id} className="w-full bg-gray-950 rounded-xl flex justify-between">
                 <div className={`py-2 border-l-5 ${todo.isDone ? "border-green-500" : "border-gray-500"} pl-3 rounded-md`}>
                   <p className={`text-xl mb-1 ${todo.isDone ? "line-through" : ""}`}>{todo.text}</p>
@@ -109,7 +135,13 @@ const TodosPage = () => {
               </li>
             ))
           ) : (
-            <p className="text-gray-500">No todos available. Add a new todo!</p>
+            filteredTodos.length === 0 && filter === "done" ? (
+              <p className="text-gray-500">No completed todos.</p>
+            ) : filteredTodos.length === 0 && filter === "notDone" ? (
+              <p className="text-gray-500">No pending todos.</p>
+            ) : (
+              <p className="text-gray-500">No todos available. Add a new todo!</p>
+            )
           )}
         </ul>
       </div>
